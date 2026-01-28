@@ -2,17 +2,17 @@ package com.be24.api.Board;
 
 import com.be24.api.Board.model.BoardDto;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class BoardRepositoryImpl implements BoardRepository {
-
     public BoardDto read(String boardIdx) {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mariadb://10.10.10.30:3306/test", "root", "qwer1234");
+            Connection conn = DriverManager.getConnection("jdbc:mariadb://192.168.10.103:3306/test", "root", "qwer1234");
             try (Statement stmt = conn.createStatement()) {
                 ResultSet rs = stmt.executeQuery("SELECT * FROM board LEFT JOIN reply ON board.idx=reply.boardIdx WHERE board.idx=" + boardIdx);
 
@@ -34,7 +34,7 @@ public class BoardRepositoryImpl implements BoardRepository {
     public BoardDto create(BoardDto dto) {
         try {
             Class.forName("org.mariadb.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mariadb://10.10.10.30:3306/test", "root", "qwer1234");
+            Connection conn = DriverManager.getConnection("jdbc:mariadb://192.168.10.103:3306/test", "root", "qwer1234");
             try (Statement stmt = conn.createStatement()) {
                 Integer affectedRows = stmt.executeUpdate(
                         "INSERT INTO board (title, contents) VALUES ('" + dto.getTitle() + "','" + dto.getContents() + "')",
