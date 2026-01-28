@@ -3,24 +3,20 @@ package com.be24.api.Board;
 import com.be24.api.Board.model.BoardDto;
 
 public class BoardService {
+    private final BoardRepository boardRepository;
 
-    // -- BoardService 클래스에 싱글톤 디자인 패턴 적용--
-    private BoardService() {
-
+    public BoardService(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
     }
 
-    private static class SingletonHolder {
-        private static final BoardService instance = new BoardService();
-    }
+    public BoardDto read(String boardIdx) {
+        BoardDto dto = boardRepository.read(boardIdx);
 
-    public static BoardService getInstance() {
-        return SingletonHolder.instance;
+        return dto;
     }
-    // -- BoardService 클래스에 싱글톤 디자인 패턴 적용--
 
     public BoardDto register(BoardDto dto) {
-        // BoardRepository 클래스에 싱글톤 적용, new로 생성 못하니까 메소드로 객체 가져옴
-        BoardRepository boardRepository = BoardRepository.getInstance();
+
         BoardDto returnDto = boardRepository.create(dto);
 
         return returnDto;
